@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>勇者传说 / Hero's Quest</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="game-container">
+  <canvas id="game" width="800" height="600"></canvas>
+
+  <div id="hud">
+    <div class="bar-row"><span class="label">HP</span>
+      <div class="bar"><div id="hp-fill" class="fill hp"></div><span id="hp-text" class="bar-text">100/100</span></div>
+    </div>
+    <div class="bar-row"><span class="label">EXP</span>
+      <div class="bar"><div id="xp-fill" class="fill xp"></div><span id="xp-text" class="bar-text">0/100</span></div>
+    </div>
+    <div class="stats">
+      <span>等级 <b id="level">1</b></span>
+      <span>攻击 <b id="atk">10</b></span>
+      <span>金币 <b id="gold">0</b></span>
+    </div>
+  </div>
+
+  <div id="dialogue" class="hidden">
+    <div id="dialogue-name"></div>
+    <div id="dialogue-text"></div>
+    <div id="dialogue-hint">点击空格或屏幕继续...</div>
+  </div>
+
+  <div id="hint">
+    左键点击地面：移动 &nbsp; | &nbsp; 左键点击怪物：攻击 &nbsp; | &nbsp; 左键点击 NPC：对话
+  </div>
+
+  <div id="death" class="hidden">
+    <h1>你死了</h1>
+    <button onclick="window.game.respawn()">重生</button>
+  </div>
+</div>
+<script src="entities.js"></script>
+<script src="render.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
