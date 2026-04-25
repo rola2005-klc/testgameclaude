@@ -105,16 +105,75 @@ function drawMonster(m) {
 
 function drawPlayer() {
   const x = player.x - camera.x, y = player.y - camera.y;
+  // 走路动画
+  const moving = !!(player.target || player.attackTarget);
+  const t = moving ? Math.sin(performance.now() / 100) : 0;
+  const legSwing = t * 3;
+
+  // 影子
   ctx.fillStyle = "rgba(0,0,0,.35)";
-  ctx.beginPath(); ctx.ellipse(x, y + 14, 14, 5, 0, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = "#f4d35e";
-  ctx.beginPath(); ctx.arc(x, y, player.radius, 0, Math.PI * 2); ctx.fill();
-  ctx.strokeStyle = "#000"; ctx.lineWidth = 2; ctx.stroke();
-  ctx.strokeStyle = "#ddd"; ctx.lineWidth = 3;
-  ctx.beginPath(); ctx.moveTo(x + 10, y); ctx.lineTo(x + 22, y - 8); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(x, y + 18, 12, 4, 0, 0, Math.PI * 2); ctx.fill();
+
+  ctx.strokeStyle = "#000"; ctx.lineWidth = 1.5;
+
+  // 腿
+  ctx.fillStyle = "#3b5998";
+  ctx.fillRect(x - 6, y + 6, 5, 12 + legSwing);
+  ctx.fillRect(x + 1, y + 6, 5, 12 - legSwing);
+  ctx.strokeRect(x - 6, y + 6, 5, 12 + legSwing);
+  ctx.strokeRect(x + 1, y + 6, 5, 12 - legSwing);
+
+  // 身体（绿衣服）
+  ctx.fillStyle = "#2ecc71";
+  ctx.fillRect(x - 8, y - 4, 16, 12);
+  ctx.strokeRect(x - 8, y - 4, 16, 12);
+  // 腰带
+  ctx.fillStyle = "#5a3a1a";
+  ctx.fillRect(x - 8, y + 5, 16, 2);
+
+  // 手臂
+  ctx.fillStyle = "#f4c98c";
+  ctx.fillRect(x - 11, y - 2, 4, 9 - legSwing);
+  ctx.fillRect(x + 7, y - 2, 4, 9 + legSwing);
+  ctx.strokeRect(x - 11, y - 2, 4, 9 - legSwing);
+  ctx.strokeRect(x + 7, y - 2, 4, 9 + legSwing);
+
+  // 头
+  ctx.fillStyle = "#f4c98c";
+  ctx.beginPath(); ctx.arc(x, y - 10, 7, 0, Math.PI * 2); ctx.fill();
+  ctx.stroke();
+  // 头发
+  ctx.fillStyle = "#5a3a1a";
+  ctx.beginPath();
+  ctx.arc(x, y - 12, 7, Math.PI, 2 * Math.PI);
+  ctx.fill();
+  // 眼睛
+  ctx.fillStyle = "#000";
+  ctx.fillRect(x - 3, y - 10, 1.5, 2);
+  ctx.fillRect(x + 1.5, y - 10, 1.5, 2);
+
+  // 剑（右手举）
+  ctx.strokeStyle = "#bdc3c7"; ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(x + 11, y + 3);
+  ctx.lineTo(x + 20, y - 8);
+  ctx.stroke();
+  ctx.fillStyle = "#5a3a1a";
+  ctx.fillRect(x + 9, y + 2, 4, 3);
+
+  // 攻击挥剑动画
+  if (player.attackTarget && player.attackCooldown > 0.4) {
+    ctx.strokeStyle = "rgba(255,255,255,.6)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(x + 10, y, 16, -Math.PI / 3, Math.PI / 3);
+    ctx.stroke();
+  }
+
+  // 移动目标标记
   if (player.target) {
     const tx = player.target.x - camera.x, ty = player.target.y - camera.y;
-    ctx.strokeStyle = "rgba(255,255,255,.5)";
+    ctx.strokeStyle = "rgba(255,255,255,.5)"; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.arc(tx, ty, 6, 0, Math.PI * 2); ctx.stroke();
   }
 }
